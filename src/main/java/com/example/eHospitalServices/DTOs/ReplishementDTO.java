@@ -8,6 +8,8 @@ public class ReplishementDTO {
 
     private Long consumableMDId;
 
+    private String consumableMDName;
+
     private String supplier;
 
     private LocalDate date;
@@ -28,6 +30,14 @@ public class ReplishementDTO {
 
     public void setConsumableMDId(Long consumableMDId) {
         this.consumableMDId = consumableMDId;
+    }
+
+    public String getConsumableMDName() {
+        return consumableMDName;
+    }
+
+    public void setConsumableMDName(String consumableMDName) {
+        this.consumableMDName = consumableMDName;
     }
 
     public String getSupplier() {
@@ -59,12 +69,12 @@ public class ReplishementDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReplishementDTO that = (ReplishementDTO) o;
-        return Objects.equals(id, that.id) && Objects.equals(consumableMDId, that.consumableMDId) && Objects.equals(supplier, that.supplier) && Objects.equals(date, that.date) && Objects.equals(quantity, that.quantity);
+        return Objects.equals(id, that.id) && Objects.equals(consumableMDId, that.consumableMDId) && Objects.equals(consumableMDName, that.consumableMDName) && Objects.equals(supplier, that.supplier) && Objects.equals(date, that.date) && Objects.equals(quantity, that.quantity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, consumableMDId, supplier, date, quantity);
+        return Objects.hash(id, consumableMDId, consumableMDName, supplier, date, quantity);
     }
 
     @Override
@@ -72,6 +82,7 @@ public class ReplishementDTO {
         return "ReplishementDTO{" +
                 "id=" + id +
                 ", consumableMDId=" + consumableMDId +
+                ", consumableMDName='" + consumableMDName + '\'' +
                 ", supplier='" + supplier + '\'' +
                 ", date=" + date +
                 ", quantity=" + quantity +

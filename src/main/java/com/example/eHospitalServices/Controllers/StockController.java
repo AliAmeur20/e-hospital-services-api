@@ -6,6 +6,7 @@ import com.example.eHospitalServices.Models.Stock;
 import com.example.eHospitalServices.Repositories.StockRepo;
 import com.example.eHospitalServices.Services.StockService;
 import com.example.eHospitalServices.Services.Utils;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -59,13 +60,13 @@ public class StockController {
 
     @GetMapping
     public ResponseEntity<List<StockDTO>> getAllStocks() {
-        List<StockDTO> stockDTOS = stockRepo.findAll().stream().map(stockMapper::toDTO).collect(Collectors.toList());
+        List<StockDTO> stockDTOS = stockRepo.findAll(Sort.by(Sort.Order.asc("id"))).stream().map(stockMapper::toDTO).collect(Collectors.toList());
         return ResponseEntity.ok().body(stockDTOS);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStock(@PathVariable Long id) {
-        stockRepo.deleteById(id);
+        stockService.delete(id);
         return ResponseEntity.ok().build();
     }
 }

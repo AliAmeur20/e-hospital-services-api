@@ -30,10 +30,10 @@ public class StockService {
     public StockDTO update(StockDTO stockDTO, Long id){
         Optional<Stock> updatedStock = stockRepo.findById(id).map(
                 stock -> {
-                    stock.setName(stockDTO.getName());
-                    stock.setLocation(stockDTO.getLocation());
-                    stock.setQuantity(stockDTO.getQuantity());
-                    stock.setLevel(stockDTO.getLevel());
+                    if(stockDTO.getName() != null) stock.setName(stockDTO.getName());
+                    if(stockDTO.getLocation() != null) stock.setLocation(stockDTO.getLocation());
+                    if(stockDTO.getQuantity() != 0) stock.setQuantity(stockDTO.getQuantity());
+                    if(stockDTO.getLevel() != null) stock.setLevel(stockDTO.getLevel());
                     return stockRepo.save(stock);
                 });
         return stockMapper.toDTO(updatedStock.get());

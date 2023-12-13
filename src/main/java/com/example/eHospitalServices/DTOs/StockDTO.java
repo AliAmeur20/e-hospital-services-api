@@ -9,6 +9,8 @@ public class StockDTO {
 
     private Long consumableMDId;
 
+    private String consumableMDName;
+
     private Double quantity;
 
     private String location;
@@ -37,6 +39,14 @@ public class StockDTO {
 
     public void setConsumableMDId(Long consumableMDId) {
         this.consumableMDId = consumableMDId;
+    }
+
+    public String getConsumableMDName() {
+        return consumableMDName;
+    }
+
+    public void setConsumableMDName(String consumableMDName) {
+        this.consumableMDName = consumableMDName;
     }
 
     public Double getQuantity() {
@@ -68,12 +78,12 @@ public class StockDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StockDTO stockDTO = (StockDTO) o;
-        return Objects.equals(id, stockDTO.id) && Objects.equals(name, stockDTO.name) && Objects.equals(consumableMDId, stockDTO.consumableMDId) && Objects.equals(quantity, stockDTO.quantity) && Objects.equals(location, stockDTO.location) && Objects.equals(level, stockDTO.level);
+        return Objects.equals(id, stockDTO.id) && Objects.equals(name, stockDTO.name) && Objects.equals(consumableMDId, stockDTO.consumableMDId) && Objects.equals(consumableMDName, stockDTO.consumableMDName) && Objects.equals(quantity, stockDTO.quantity) && Objects.equals(location, stockDTO.location) && Objects.equals(level, stockDTO.level);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, consumableMDId, quantity, location, level);
+        return Objects.hash(id, name, consumableMDId, consumableMDName, quantity, location, level);
     }
 
     @Override
@@ -82,6 +92,7 @@ public class StockDTO {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", consumableMDId=" + consumableMDId +
+                ", consumableMDName='" + consumableMDName + '\'' +
                 ", quantity=" + quantity +
                 ", location='" + location + '\'' +
                 ", level='" + level + '\'' +

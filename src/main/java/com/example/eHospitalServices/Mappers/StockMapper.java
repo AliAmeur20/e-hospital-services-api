@@ -10,6 +10,7 @@ import org.mapstruct.Mapping;
 public interface StockMapper {
 
     @Mapping(target = "consumableMDId" , source = "consumableMD.id" )
+    @Mapping(target = "consumableMDName" , source = "consumableMD.name" )
     StockDTO toDTO (Stock stock);
 
     @InheritInverseConfiguration

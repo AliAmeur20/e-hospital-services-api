@@ -33,9 +33,9 @@ public class ReplishementService {
         stockService.destockCMD(replishement.get().getConsumableMD().getId(), replishement.get().getQuantity());
         replishement = replishement.map(
                 repl -> {
-                    repl.setSupplier(replishementDTO.getSupplier());
-                    repl.setDate(replishementDTO.getDate());
-                    repl.setQuantity(replishementDTO.getQuantity());
+                    if(replishementDTO.getSupplier() != null) repl.setSupplier(replishementDTO.getSupplier());
+                    if(replishementDTO.getDate() != null) repl.setDate(replishementDTO.getDate());
+                    if(replishementDTO.getQuantity() != 0) repl.setQuantity(replishementDTO.getQuantity());
                     return replishementRepo.save(repl);
                 });
         stockService.restockCMD(replishement.get().getConsumableMD().getId(), replishement.get().getQuantity());

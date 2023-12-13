@@ -8,6 +8,8 @@ public class ConsumptionDTO {
 
     private Long consumableMDId;
 
+    private String consumableMDName;
+
     private String staff;
 
     private LocalDate date;
@@ -28,6 +30,14 @@ public class ConsumptionDTO {
 
     public void setConsumableMDId(Long consumableMDId) {
         this.consumableMDId = consumableMDId;
+    }
+
+    public String getConsumableMDName() {
+        return consumableMDName;
+    }
+
+    public void setConsumableMDName(String consumableMDName) {
+        this.consumableMDName = consumableMDName;
     }
 
     public String getStaff() {
@@ -59,12 +69,12 @@ public class ConsumptionDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ConsumptionDTO that = (ConsumptionDTO) o;
-        return Objects.equals(id, that.id) && Objects.equals(consumableMDId, that.consumableMDId) && Objects.equals(staff, that.staff) && Objects.equals(date, that.date) && Objects.equals(quantity, that.quantity);
+        return Objects.equals(id, that.id) && Objects.equals(consumableMDId, that.consumableMDId) && Objects.equals(consumableMDName, that.consumableMDName) && Objects.equals(staff, that.staff) && Objects.equals(date, that.date) && Objects.equals(quantity, that.quantity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, consumableMDId, staff, date, quantity);
+        return Objects.hash(id, consumableMDId, consumableMDName, staff, date, quantity);
     }
 
     @Override
@@ -72,6 +82,7 @@ public class ConsumptionDTO {
         return "ConsumptionDTO{" +
                 "id=" + id +
                 ", consumableMDId=" + consumableMDId +
+                ", consumableMDName='" + consumableMDName + '\'' +
                 ", staff='" + staff + '\'' +
                 ", date=" + date +
                 ", quantity=" + quantity +

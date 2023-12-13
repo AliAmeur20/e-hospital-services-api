@@ -5,6 +5,7 @@ import com.example.eHospitalServices.Mappers.ConsumableMDMapper;
 import com.example.eHospitalServices.Models.ConsumableMD;
 import com.example.eHospitalServices.Repositories.ConsumableMDRepo;
 import com.example.eHospitalServices.Services.ConsumableMDService;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +55,7 @@ public class ConsumableMDController {
 
     @GetMapping
     public ResponseEntity<List<ConsumableMDDTO>> getAllCMDevices () {
-        List<ConsumableMDDTO> consumableMDDTOS = consumableMDRepo.findAll().stream().map(consumableMDMapper::toDTO).collect(Collectors.toList());
+        List<ConsumableMDDTO> consumableMDDTOS = consumableMDRepo.findAll(Sort.by(Sort.Order.asc("id"))).stream().map(consumableMDMapper::toDTO).collect(Collectors.toList());
             return ResponseEntity.ok().body(consumableMDDTOS);
     }
 

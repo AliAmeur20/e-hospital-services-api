@@ -10,6 +10,7 @@ import org.mapstruct.Mapping;
 public interface ConsumptionMapper {
 
     @Mapping(target = "consumableMDId" , source = "consumableMD.id" )
+    @Mapping(target = "consumableMDName" , source = "consumableMD.name" )
     ConsumptionDTO toDTO (Consumption consumption);
 
     @InheritInverseConfiguration

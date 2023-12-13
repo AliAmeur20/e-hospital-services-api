@@ -26,10 +26,10 @@ public class ConsumableMDService {
     public ConsumableMDDTO update(ConsumableMDDTO consumableMDDTO, Long id){
         Optional<ConsumableMD> updatedCMD = consumableMDRepo.findById(id).map(
                 cmd -> {
-                    cmd.setName(consumableMDDTO.getName());
-                    cmd.setType(consumableMDDTO.getType());
-                    cmd.setSize(consumableMDDTO.getSize());
-                    cmd.setExpDate(consumableMDDTO.getExpDate());
+                    if(consumableMDDTO.getName() != null) cmd.setName(consumableMDDTO.getName());
+                    if(consumableMDDTO.getType() != null) cmd.setType(consumableMDDTO.getType());
+                    if(consumableMDDTO.getSize() != 0) cmd.setSize(consumableMDDTO.getSize());
+                    if(consumableMDDTO.getExpDate() != null) cmd.setExpDate(consumableMDDTO.getExpDate());
                     return consumableMDRepo.save(cmd);
                 });
         return consumableMDMapper.toDTO(updatedCMD.get());

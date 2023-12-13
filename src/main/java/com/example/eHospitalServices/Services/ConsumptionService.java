@@ -33,9 +33,9 @@ public class ConsumptionService {
         stockService.restockCMD(consumption.get().getConsumableMD().getId(), consumption.get().getQuantity());
         consumption = consumption.map(
                 cons -> {
-                    cons.setQuantity(consumptionDTO.getQuantity());
-                    cons.setDate(consumptionDTO.getDate());
-                    cons.setStaff(consumptionDTO.getStaff());
+                    if(consumptionDTO.getQuantity() != 0) cons.setQuantity(consumptionDTO.getQuantity());
+                    if(consumptionDTO.getDate() != null) cons.setDate(consumptionDTO.getDate());
+                    if(consumptionDTO.getStaff() != null) cons.setStaff(consumptionDTO.getStaff());
                     return consumptionRepo.save(cons);
                 });
         stockService.destockCMD(consumption.get().getConsumableMD().getId(), consumption.get().getQuantity());

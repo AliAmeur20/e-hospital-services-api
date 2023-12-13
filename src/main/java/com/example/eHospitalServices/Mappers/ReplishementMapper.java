@@ -10,6 +10,7 @@ import org.mapstruct.Mapping;
 public interface ReplishementMapper {
 
     @Mapping(target = "consumableMDId" , source = "consumableMD.id" )
+    @Mapping(target = "consumableMDName" , source = "consumableMD.name" )
     ReplishementDTO toDTO (Replishement replishement);
 
     @InheritInverseConfiguration
