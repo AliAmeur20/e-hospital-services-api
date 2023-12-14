@@ -2,6 +2,12 @@ package com.example.eHospitalServices.Repositories;
 
 import com.example.eHospitalServices.Models.ConsumableMD;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 
-public interface ConsumableMDRepo extends JpaRepository<ConsumableMD, Long> {
+import java.util.List;
+
+public interface ConsumableMDRepo extends JpaRepository<ConsumableMD, Long>, JpaSpecificationExecutor<ConsumableMD> {
+    @Query("SELECT c FROM ConsumableMD c WHERE NOT EXISTS (SELECT s FROM Stock s WHERE s.consumableMD = c)")
+    List<ConsumableMD> findConsumableMDsNotAttachedToStock();
 }

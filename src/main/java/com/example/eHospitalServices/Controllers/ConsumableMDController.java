@@ -59,6 +59,12 @@ public class ConsumableMDController {
             return ResponseEntity.ok().body(consumableMDDTOS);
     }
 
+    @GetMapping("/stock")
+    public ResponseEntity<List<ConsumableMDDTO>> getAStockCMDevices () {
+        List<ConsumableMDDTO> consumableMDDTOS = consumableMDRepo.findConsumableMDsNotAttachedToStock().stream().map(consumableMDMapper::toDTO).collect(Collectors.toList());
+        return ResponseEntity.ok().body(consumableMDDTOS);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCMDevice (@PathVariable Long id) {
         consumableMDService.delete(id);
