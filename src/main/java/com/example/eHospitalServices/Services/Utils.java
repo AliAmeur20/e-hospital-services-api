@@ -38,6 +38,10 @@ public class Utils {
         return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.isNull(getPath(root, property));
     }
 
+    public static <T> Specification<T> getLikeCMDSpec(String property, String value) {
+        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.lower(root.get("consumableMD").get(property)), "%" + value + "%");
+    }
+
     public static <T> Path<T> getPath(Root<T> root, String nestedProperty) {
         String[] properties = nestedProperty.split("\\.");
         Path<T> path = root.get(properties[0]);

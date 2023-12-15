@@ -5,7 +5,9 @@ import com.example.eHospitalServices.Mappers.ReplishementMapper;
 import com.example.eHospitalServices.Models.Replishement;
 import com.example.eHospitalServices.Repositories.ReplishementRepo;
 import com.example.eHospitalServices.Services.ReplishementService;
+import com.example.eHospitalServices.Services.Utils;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,8 +62,10 @@ public class ReplishementController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ReplishementDTO>> getAllReplishement(){
-        List<ReplishementDTO> replishementDTOS = replishementRepo.findAll(Sort.by(Sort.Order.asc("id"))).stream().map(replishementMapper::toDTO).collect(Collectors.toList());
+    public ResponseEntity<List<ReplishementDTO>> getAllReplishement(@RequestParam(required = false) String search) {
+        Specification<Replishement> specs = null;
+        if(search != null) specs = Utils.getLikeCMDSpec("name", search.trim().toLowerCase());
+        List<ReplishementDTO> replishementDTOS = replishementRepo.findAll(specs, Sort.by(Sort.Order.asc("id"))).stream().map(replishementMapper::toDTO).collect(Collectors.toList());
         return ResponseEntity.ok().body(replishementDTOS);
     }
 

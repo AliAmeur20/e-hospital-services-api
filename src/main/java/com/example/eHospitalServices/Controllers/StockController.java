@@ -7,6 +7,7 @@ import com.example.eHospitalServices.Repositories.StockRepo;
 import com.example.eHospitalServices.Services.StockService;
 import com.example.eHospitalServices.Services.Utils;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -59,8 +60,10 @@ public class StockController {
     }
 
     @GetMapping
-    public ResponseEntity<List<StockDTO>> getAllStocks() {
-        List<StockDTO> stockDTOS = stockRepo.findAll(Sort.by(Sort.Order.asc("id"))).stream().map(stockMapper::toDTO).collect(Collectors.toList());
+    public ResponseEntity<List<StockDTO>> getAllStocks(@RequestParam(required = false) String search) {
+        Specification<Stock> specs = null;
+        if(search != null) specs = Utils.<Stock>getLikeSpec("name", search.trim().toLowerCase()).or(Utils.getLikeCMDSpec("name", search.trim().toLowerCase()));
+        List<StockDTO> stockDTOS = stockRepo.findAll(specs, Sort.by(Sort.Order.asc("id"))).stream().map(stockMapper::toDTO).collect(Collectors.toList());
         return ResponseEntity.ok().body(stockDTOS);
     }
 

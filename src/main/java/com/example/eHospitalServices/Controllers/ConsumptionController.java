@@ -5,7 +5,9 @@ import com.example.eHospitalServices.Mappers.ConsumptionMapper;
 import com.example.eHospitalServices.Models.Consumption;
 import com.example.eHospitalServices.Repositories.ConsumptionRepo;
 import com.example.eHospitalServices.Services.ConsumptionService;
+import com.example.eHospitalServices.Services.Utils;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -58,8 +60,10 @@ public class ConsumptionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ConsumptionDTO>> getAllConsumptions(){
-        List<ConsumptionDTO> consumptionDTOS = consumptionRepo.findAll(Sort.by(Sort.Order.asc("id"))).stream().map(consumptionMapper::toDTO).collect(Collectors.toList());
+    public ResponseEntity<List<ConsumptionDTO>> getAllConsumptions(@RequestParam(required = false) String search) {
+        Specification<Consumption> specs = null;
+        if(search != null) specs = Utils.getLikeCMDSpec("name", search.trim().toLowerCase());
+        List<ConsumptionDTO> consumptionDTOS = consumptionRepo.findAll(specs, Sort.by(Sort.Order.asc("id"))).stream().map(consumptionMapper::toDTO).collect(Collectors.toList());
         return ResponseEntity.ok().body(consumptionDTOS);
     }
 

@@ -10,4 +10,6 @@ import java.util.List;
 public interface ConsumableMDRepo extends JpaRepository<ConsumableMD, Long>, JpaSpecificationExecutor<ConsumableMD> {
     @Query("SELECT c FROM ConsumableMD c WHERE NOT EXISTS (SELECT s FROM Stock s WHERE s.consumableMD = c)")
     List<ConsumableMD> findConsumableMDsNotAttachedToStock();
+    @Query("SELECT c FROM ConsumableMD c JOIN Stock s ON c.id = s.consumableMD.id")
+    List<ConsumableMD> findConsumableMDsAttachedToStock();
 }
