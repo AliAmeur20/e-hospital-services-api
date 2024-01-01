@@ -2,6 +2,7 @@ package com.example.eHospitalServices.Models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -11,21 +12,15 @@ public class Stock {
     @GeneratedValue
     private Long id;
 
-    @Column
-    private String name;
-
     @OneToOne
     @JoinColumn(nullable = false)
     private ConsumableMD consumableMD;
 
+    @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
+    private List<DevicePackage> devicePackages;
+
     @Column
     private Double quantity;
-
-    @Column
-    private String location;
-
-    @Column
-    private String level;
 
     public Long getId() {
         return id;
@@ -33,14 +28,6 @@ public class Stock {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public ConsumableMD getConsumableMD() {
@@ -59,20 +46,12 @@ public class Stock {
         this.quantity = quantity;
     }
 
-    public String getLocation() {
-        return location;
+    public List<DevicePackage> getDevicePackages() {
+        return devicePackages;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
+    public void setDevicePackages(List<DevicePackage> devicePackages) {
+        this.devicePackages = devicePackages;
     }
 
     @Override
@@ -80,23 +59,21 @@ public class Stock {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Stock stock = (Stock) o;
-        return Objects.equals(id, stock.id) && Objects.equals(name, stock.name) && Objects.equals(consumableMD, stock.consumableMD) && Objects.equals(quantity, stock.quantity) && Objects.equals(location, stock.location) && Objects.equals(level, stock.level);
+        return Objects.equals(id, stock.id) && Objects.equals(consumableMD, stock.consumableMD) && Objects.equals(devicePackages, stock.devicePackages) && Objects.equals(quantity, stock.quantity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, consumableMD, quantity, location, level);
+        return Objects.hash(id, consumableMD, devicePackages, quantity);
     }
 
     @Override
     public String toString() {
         return "Stock{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
                 ", consumableMD=" + consumableMD +
+                ", devicePackages=" + devicePackages +
                 ", quantity=" + quantity +
-                ", location='" + location + '\'' +
-                ", level='" + level + '\'' +
                 '}';
     }
 }

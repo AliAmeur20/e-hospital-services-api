@@ -1,7 +1,9 @@
 package com.example.eHospitalServices.Services;
 
 import com.example.eHospitalServices.Models.ConsumableMD;
+import com.example.eHospitalServices.Models.Stock;
 import com.example.eHospitalServices.Repositories.ConsumableMDRepo;
+import com.example.eHospitalServices.Repositories.StockRepo;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
@@ -13,15 +15,26 @@ import java.util.Optional;
 @Service
 public class Utils {
     private final ConsumableMDRepo consumableMDRepo;
+    private final StockRepo stockRepo;
 
-    public Utils(ConsumableMDRepo consumableMDRepo) {
+    public Utils(ConsumableMDRepo consumableMDRepo, StockRepo stockRepo) {
         this.consumableMDRepo = consumableMDRepo;
+        this.stockRepo = stockRepo;
     }
 
     public ConsumableMD checkAndGetCMD (Long id){
         Optional<ConsumableMD> consumableMD = consumableMDRepo.findById(id);
         if (consumableMD.isPresent()){
             return consumableMD.get();
+        }else{
+            throw new NoSuchElementException();
+        }
+    }
+
+    public Stock checkAndGetStock (Long id){
+        Optional<Stock> stock = stockRepo.findById(id);
+        if (stock.isPresent()){
+            return stock.get();
         }else{
             throw new NoSuchElementException();
         }
