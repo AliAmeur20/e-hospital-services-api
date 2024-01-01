@@ -14,10 +14,6 @@ public class ConsumableMDDTO {
 
     private int size;
 
-    private LocalDate expDate;
-
-    private CMDState cmdState;
-
     public Long getId() {
         return id;
     }
@@ -50,33 +46,17 @@ public class ConsumableMDDTO {
         this.size = size;
     }
 
-    public LocalDate getExpDate() {
-        return expDate;
-    }
-
-    public void setExpDate(LocalDate expDate) {
-        this.expDate = expDate;
-    }
-
-    public CMDState getCmdState() {
-        return cmdState;
-    }
-
-    public void setCmdState(CMDState cmdState) {
-        this.cmdState = cmdState;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ConsumableMDDTO that = (ConsumableMDDTO) o;
-        return size == that.size && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(type, that.type) && Objects.equals(expDate, that.expDate) && cmdState == that.cmdState;
+        return size == that.size && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(type, that.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, type, size, expDate, cmdState);
+        return Objects.hash(id, name, type, size);
     }
 
     @Override
@@ -86,8 +66,6 @@ public class ConsumableMDDTO {
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 ", size=" + size +
-                ", expDate=" + expDate +
-                ", cmdState=" + cmdState +
                 '}';
     }
 }

@@ -1,5 +1,6 @@
 package com.example.eHospitalServices.Controllers;
 
+import com.example.eHospitalServices.DTOs.CreateReplishementDTO;
 import com.example.eHospitalServices.DTOs.ReplishementDTO;
 import com.example.eHospitalServices.Mappers.ReplishementMapper;
 import com.example.eHospitalServices.Models.Replishement;
@@ -33,9 +34,9 @@ public class ReplishementController {
     }
 
     @PostMapping
-    public ResponseEntity<ReplishementDTO> createReplishement(@RequestBody ReplishementDTO replishementDTO){
+    public ResponseEntity<ReplishementDTO> createReplishement(@RequestBody CreateReplishementDTO createReplishementDTO){
         try{
-            ReplishementDTO replishement = replishementService.create(replishementDTO);
+            ReplishementDTO replishement = replishementService.create(createReplishementDTO);
             return ResponseEntity.created(new URI("/api/replishement/" + replishement.getId())).body(replishement);
         }catch (NoSuchElementException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

@@ -42,12 +42,6 @@ public class ConsumptionController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ConsumptionDTO> updateConsumption(@RequestBody ConsumptionDTO consumptionDTO, @PathVariable Long id){
-        ConsumptionDTO consumption = consumptionService.update(consumptionDTO, id);
-        return ResponseEntity.ok().body(consumption);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<ConsumptionDTO> getConsumption(@PathVariable Long id){
         Optional<Consumption> consumption = consumptionRepo.findById(id);

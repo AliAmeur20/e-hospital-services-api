@@ -1,11 +1,13 @@
 package com.example.eHospitalServices.Services;
 
+import com.example.eHospitalServices.DTOs.CreateReplishementDTO;
 import com.example.eHospitalServices.DTOs.ReplishementDTO;
 import com.example.eHospitalServices.Mappers.ReplishementMapper;
 import com.example.eHospitalServices.Models.Replishement;
 import com.example.eHospitalServices.Repositories.ReplishementRepo;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -15,17 +17,27 @@ public class ReplishementService {
     private final Utils utils;
     private final StockService stockService;
 
-    public ReplishementService(ReplishementRepo replishementRepo, ReplishementMapper replishementMapper, Utils utils, StockService stockService) {
+    private final DevicePackageService devicePackageService;
+
+    public ReplishementService(ReplishementRepo replishementRepo, ReplishementMapper replishementMapper, Utils utils, StockService stockService, DevicePackageService devicePackageService) {
         this.replishementRepo = replishementRepo;
         this.replishementMapper = replishementMapper;
         this.utils = utils;
         this.stockService = stockService;
+        this.devicePackageService = devicePackageService;
     }
 
-    public ReplishementDTO create(ReplishementDTO replishementDTO){
-        utils.checkAndGetCMD(replishementDTO.getConsumableMDId());
-        stockService.restockCMD(replishementDTO.getConsumableMDId(), replishementDTO.getQuantity());
-        return save(replishementDTO);
+    public ReplishementDTO create(CreateReplishementDTO createReplishementDTO){
+        utils.checkAndGetCMD(createReplishementDTO.getCmdId());
+        ReplishementDTO newReplishement = new ReplishementDTO();
+        newReplishement.setDate(LocalDate.now());
+        newReplishement.setConsumableMDId(createReplishementDTO.getCmdId());
+        newReplishement.setQuantity(createReplishementDTO.getQuantity());
+        newReplishement.setSupplier(createReplishementDTO.getSupplier());
+        ReplishementDTO savedReplishement = save(newReplishement);
+        devicePackageService.create(createReplishementDTO, savedReplishement.getId());
+        stockService.restockCMD(savedReplishement.getConsumableMDId(), savedReplishement.getQuantity());
+        return savedReplishement;
     }
 
     public ReplishementDTO update(ReplishementDTO replishementDTO, Long id){
@@ -34,10 +46,10 @@ public class ReplishementService {
         replishement = replishement.map(
                 repl -> {
                     if(replishementDTO.getSupplier() != null) repl.setSupplier(replishementDTO.getSupplier());
-                    if(replishementDTO.getDate() != null) repl.setDate(replishementDTO.getDate());
                     if(replishementDTO.getQuantity() != 0) repl.setQuantity(replishementDTO.getQuantity());
                     return replishementRepo.save(repl);
                 });
+        devicePackageService.updateQuantity(replishement.get().getId(), replishement.get().getQuantity());
         stockService.restockCMD(replishement.get().getConsumableMD().getId(), replishement.get().getQuantity());
         return replishementMapper.toDTO(replishement.get());
     }
@@ -45,6 +57,7 @@ public class ReplishementService {
     public void delete(Long id){
         Optional<Replishement> replishement = replishementRepo.findById(id);
         stockService.destockCMD(replishement.get().getConsumableMD().getId() , replishement.get().getQuantity());
+        devicePackageService.deleteByReplishement(replishement.get().getId());
         replishementRepo.delete(replishement.get());
     }
 

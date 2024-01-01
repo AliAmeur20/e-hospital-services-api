@@ -63,21 +63,16 @@ public class ConsumableMDController {
             return ResponseEntity.ok().body(consumableMDDTOS);
     }
 
-    @GetMapping("/stock")
-    public ResponseEntity<List<ConsumableMDDTO>> getAStockCMDevices () {
-        List<ConsumableMDDTO> consumableMDDTOS = consumableMDRepo.findConsumableMDsNotAttachedToStock().stream().map(consumableMDMapper::toDTO).collect(Collectors.toList());
-        return ResponseEntity.ok().body(consumableMDDTOS);
-    }
-
-    @GetMapping("/repcon")
-    public ResponseEntity<List<ConsumableMDDTO>> getACRCMDevices () {
-        List<ConsumableMDDTO> consumableMDDTOS = consumableMDRepo.findConsumableMDsAttachedToStock().stream().map(consumableMDMapper::toDTO).collect(Collectors.toList());
-        return ResponseEntity.ok().body(consumableMDDTOS);
-    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCMDevice (@PathVariable Long id) {
         consumableMDService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/security-storage/{id}")
+    public ResponseEntity<Double> countSecurityStorage (@PathVariable Long id){
+        Double result = consumableMDService.countSecurityStorage(id);
+        return ResponseEntity.ok().body(result);
     }
 }
