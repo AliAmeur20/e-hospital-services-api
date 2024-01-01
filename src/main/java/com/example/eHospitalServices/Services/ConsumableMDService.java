@@ -60,6 +60,10 @@ public class ConsumableMDService {
     public Double countSecurityStorage(Long deviceId){
         List<Consumption> consumptions = consumptionRepo.findByConsumableMD_Id(deviceId);
         Double EC = consumptions.stream().mapToDouble(Consumption::getQuantity).average().orElse(0.0);
-        return CS * EC * Math.sqrt(DM) ;
+        Double variance = consumptions.stream()
+                .mapToDouble(consumption -> Math.pow(consumption.getQuantity() - EC, 2))
+                .sum() / consumptions.size();
+        Double standardDeviation = Math.sqrt(variance);
+        return CS * standardDeviation * Math.sqrt(DM) ;
     }
 }
