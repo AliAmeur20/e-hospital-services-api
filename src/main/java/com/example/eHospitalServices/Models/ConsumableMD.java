@@ -1,6 +1,7 @@
 package com.example.eHospitalServices.Models;
 
 import com.example.eHospitalServices.Enums.CMDState;
+import com.example.eHospitalServices.Enums.OrderType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Formula;
 
@@ -19,6 +20,9 @@ public class ConsumableMD {
 
     @Column
     private String type;
+
+    @Enumerated(EnumType.STRING)
+    private OrderType orderType;
 
     @Column
     private int size;
@@ -47,6 +51,14 @@ public class ConsumableMD {
         this.type = type;
     }
 
+    public OrderType getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(OrderType orderType) {
+        this.orderType = orderType;
+    }
+
     public int getSize() {
         return size;
     }
@@ -60,12 +72,12 @@ public class ConsumableMD {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ConsumableMD that = (ConsumableMD) o;
-        return size == that.size && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(type, that.type);
+        return size == that.size && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(type, that.type) && orderType == that.orderType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, type, size);
+        return Objects.hash(id, name, type, orderType, size);
     }
 
     @Override
@@ -74,6 +86,7 @@ public class ConsumableMD {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
+                ", orderType=" + orderType +
                 ", size=" + size +
                 '}';
     }
