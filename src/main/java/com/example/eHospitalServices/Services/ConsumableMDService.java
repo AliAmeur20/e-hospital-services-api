@@ -1,6 +1,7 @@
 package com.example.eHospitalServices.Services;
 
 import com.example.eHospitalServices.DTOs.ConsumableMDDTO;
+import com.example.eHospitalServices.Enums.OrderType;
 import com.example.eHospitalServices.Mappers.ConsumableMDMapper;
 import com.example.eHospitalServices.Models.ConsumableMD;
 import com.example.eHospitalServices.Models.Consumption;
@@ -9,6 +10,7 @@ import com.example.eHospitalServices.Repositories.ConsumptionRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -31,7 +33,12 @@ public class ConsumableMDService {
     }
 
     public ConsumableMDDTO create(ConsumableMDDTO consumableMDDTO){
-        ConsumableMDDTO savedCMD = save(consumableMDDTO);
+        ConsumableMDDTO consumableMD = new ConsumableMDDTO();
+        consumableMD.setName(consumableMDDTO.getName());
+        consumableMD.setType(consumableMDDTO.getType());
+        consumableMD.setOrderType(consumableMDDTO.getOrderType());
+        consumableMD.setSize(consumableMDDTO.getSize());
+        ConsumableMDDTO savedCMD = save(consumableMD);
         stockService.create(savedCMD.getId());
         return savedCMD;
     }
@@ -57,13 +64,24 @@ public class ConsumableMDService {
         return consumableMDMapper.toDTO(savedCMD);
     }
 
-    public Double countSecurityStorage(Long deviceId){
+    public ConsumableMDDTO findOne (Long id) {
+        ConsumableMD consumableMD = consumableMDRepo.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("ConsumableMD with id " + id + " not found"));
+        return consumableMDMapper.toDTO(consumableMD);
+    }
+
+    public long countSecurityStorage(Long deviceId){
+        ConsumableMDDTO consumableMDDTO = findOne(deviceId);
         List<Consumption> consumptions = consumptionRepo.findByConsumableMD_Id(deviceId);
         Double EC = consumptions.stream().mapToDouble(Consumption::getQuantity).average().orElse(0.0);
         Double variance = consumptions.stream()
                 .mapToDouble(consumption -> Math.pow(consumption.getQuantity() - EC, 2))
                 .sum() / consumptions.size();
         Double standardDeviation = Math.sqrt(variance);
-        return CS * standardDeviation * Math.sqrt(DM) ;
+        if (consumableMDDTO.getOrderType() == OrderType.ORDER_POINT){
+            return Math.round(CS * standardDeviation * Math.sqrt(DM)) ;
+        }else {
+            return Math.round(CS * standardDeviation * Math.sqrt(DM + FR)) ;
+        }
     }
 }
