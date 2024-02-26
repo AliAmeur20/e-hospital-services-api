@@ -8,4 +8,6 @@ public interface StockRepo extends JpaRepository<Stock, Long>, JpaSpecificationE
 
     Stock findByConsumableMD_Id(Long id);
 
+    void deleteByConsumableMD_Id(Long id);
+
 }

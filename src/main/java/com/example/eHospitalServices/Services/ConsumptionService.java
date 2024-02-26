@@ -1,12 +1,16 @@
 package com.example.eHospitalServices.Services;
 
+import com.example.eHospitalServices.DTOs.ConsumptionAverageDTO;
 import com.example.eHospitalServices.DTOs.ConsumptionDTO;
 import com.example.eHospitalServices.Mappers.ConsumptionMapper;
 import com.example.eHospitalServices.Models.Consumption;
 import com.example.eHospitalServices.Repositories.ConsumptionRepo;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.Optional;
 
 @Service
@@ -15,6 +19,9 @@ public class ConsumptionService {
     private final ConsumptionMapper consumptionMapper;
     private final Utils utils;
     private final StockService stockService;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public ConsumptionService(ConsumptionRepo consumptionRepo, ConsumptionMapper consumptionMapper, Utils utils, StockService stockService) {
         this.consumptionRepo = consumptionRepo;
@@ -43,5 +50,37 @@ public class ConsumptionService {
         Consumption consumption = consumptionMapper.toEntity(consumptionDTO);
         Consumption savedConsumption = consumptionRepo.save(consumption);
         return consumptionMapper.toDTO(savedConsumption);
+    }
+
+    public ConsumptionAverageDTO calculateConsumptionAverage(Long consumableId){
+
+        YearMonth currentMonth = YearMonth.now();
+        LocalDate startOfCurrentMonth = currentMonth.atDay(1);
+        LocalDate endOfCurrentMonth = currentMonth.atEndOfMonth();
+
+        YearMonth previousMonth = currentMonth.minusMonths(1);
+        LocalDate startOfPreviousMonth = previousMonth.atDay(1);
+        LocalDate endOfPreviousMonth = previousMonth.atEndOfMonth();
+
+        Object[] result = (Object[]) entityManager.createQuery(
+                        "SELECT AVG(CASE WHEN c.date BETWEEN :startOfCurrentMonth AND :endOfCurrentMonth THEN c.quantity ELSE NULL END), " +
+                                "AVG(CASE WHEN c.date BETWEEN :startOfPreviousMonth AND :endOfPreviousMonth THEN c.quantity ELSE NULL END) " +
+                                "FROM Consumption c " +
+                                "WHERE c.consumableMD.id = :consumableId")
+                .setParameter("startOfCurrentMonth", startOfCurrentMonth)
+                .setParameter("endOfCurrentMonth", endOfCurrentMonth)
+                .setParameter("startOfPreviousMonth", startOfPreviousMonth)
+                .setParameter("endOfPreviousMonth", endOfPreviousMonth)
+                .setParameter("consumableId", consumableId)
+                .getSingleResult();
+
+        long currentMonthAverage = result[0] != null ? ((Number) result[0]).longValue() : 0;
+        long previousMonthAverage = result[1] != null ? ((Number) result[1]).longValue() : 0;
+
+        ConsumptionAverageDTO consumptionAverage = new ConsumptionAverageDTO();
+        consumptionAverage.setCurrentMonthAverage(Math.round(currentMonthAverage));
+        consumptionAverage.setPreviousMonthAverage(Math.round(previousMonthAverage));
+
+        return consumptionAverage;
     }
 }

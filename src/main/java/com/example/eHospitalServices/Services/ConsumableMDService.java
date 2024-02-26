@@ -19,7 +19,6 @@ public class ConsumableMDService {
     private final ConsumableMDRepo consumableMDRepo;
     private final StockService stockService;
     private final ConsumableMDMapper consumableMDMapper;
-
     private final ConsumptionRepo consumptionRepo;
 
     private static final Double CS = 2.33D;
@@ -55,6 +54,7 @@ public class ConsumableMDService {
     }
 
     public void delete(Long id) {
+        stockService.deleteByConsumableId(id);
         consumableMDRepo.deleteById(id);
     }
 

@@ -1,5 +1,6 @@
 package com.example.eHospitalServices.Controllers;
 
+import com.example.eHospitalServices.DTOs.ConsumptionAverageDTO;
 import com.example.eHospitalServices.DTOs.ConsumptionDTO;
 import com.example.eHospitalServices.Mappers.ConsumptionMapper;
 import com.example.eHospitalServices.Models.Consumption;
@@ -65,6 +66,12 @@ public class ConsumptionController {
     public ResponseEntity<Void> deleteConsumption(@PathVariable Long id){
         consumptionService.delete(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/average-consumption/{consumableId}")
+    public ResponseEntity<ConsumptionAverageDTO> getConsumptionAverage(@PathVariable Long consumableId){
+        ConsumptionAverageDTO consumptionAverage = consumptionService.calculateConsumptionAverage(consumableId);
+        return ResponseEntity.ok().body(consumptionAverage);
     }
 
 }

@@ -5,8 +5,10 @@ import com.example.eHospitalServices.Mappers.StockMapper;
 import com.example.eHospitalServices.Models.Stock;
 import com.example.eHospitalServices.Repositories.StockRepo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class StockService {
     private final StockRepo stockRepo;
     private final StockMapper stockMapper;
@@ -30,6 +32,10 @@ public class StockService {
 
     public void delete(Long id){
         stockRepo.deleteById(id);
+    }
+
+    public void deleteByConsumableId(Long id) {
+        stockRepo.deleteByConsumableMD_Id(id);
     }
     public StockDTO save(StockDTO stockDTO){
         Stock stock = stockMapper.toEntity(stockDTO);
