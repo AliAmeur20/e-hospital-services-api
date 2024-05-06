@@ -15,7 +15,9 @@ public class CreateReplishementDTO {
 
     private String location;
 
-    private String level;
+    private String room;
+
+    private String wardrobe;
 
     public Long getCmdId() {
         return cmdId;
@@ -57,12 +59,20 @@ public class CreateReplishementDTO {
         this.location = location;
     }
 
-    public String getLevel() {
-        return level;
+    public String getRoom() {
+        return room;
     }
 
-    public void setLevel(String level) {
-        this.level = level;
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public String getWardrobe() {
+        return wardrobe;
+    }
+
+    public void setWardrobe(String wardrobe) {
+        this.wardrobe = wardrobe;
     }
 
     @Override
@@ -70,23 +80,24 @@ public class CreateReplishementDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CreateReplishementDTO that = (CreateReplishementDTO) o;
-        return Objects.equals(cmdId, that.cmdId) && Objects.equals(supplier, that.supplier) && Objects.equals(quantity, that.quantity) && Objects.equals(expDate, that.expDate) && Objects.equals(location, that.location) && Objects.equals(level, that.level);
+        return Objects.equals(cmdId, that.cmdId) && Objects.equals(supplier, that.supplier) && Objects.equals(quantity, that.quantity) && Objects.equals(expDate, that.expDate) && Objects.equals(location, that.location) && Objects.equals(room, that.room) && Objects.equals(wardrobe, that.wardrobe);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cmdId, supplier, quantity, expDate, location, level);
+        return Objects.hash(cmdId, supplier, quantity, expDate, location, room, wardrobe);
     }
 
     @Override
     public String toString() {
-        return "createReplishementDTO{" +
+        return "CreateReplishementDTO{" +
                 "cmdId=" + cmdId +
                 ", supplier='" + supplier + '\'' +
                 ", quantity=" + quantity +
                 ", expDate=" + expDate +
                 ", location='" + location + '\'' +
-                ", level='" + level + '\'' +
+                ", room='" + room + '\'' +
+                ", wardrobe='" + wardrobe + '\'' +
                 '}';
     }
 }

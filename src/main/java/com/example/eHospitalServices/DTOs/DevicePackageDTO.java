@@ -9,6 +9,12 @@ public class DevicePackageDTO {
 
     private Long id;
 
+    private String reference;
+
+    private Long number;
+
+    private LocalDate date;
+
     private Long stockId;
 
     private Long replishementId;
@@ -20,7 +26,9 @@ public class DevicePackageDTO {
 
     private String location;
 
-    private String level;
+    private String room;
+
+    private String wardrobe;
 
     public Long getId() {
         return id;
@@ -28,6 +36,30 @@ public class DevicePackageDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public Long getNumber() {
+        return number;
+    }
+
+    public void setNumber(Long number) {
+        this.number = number;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public Long getStockId() {
@@ -78,12 +110,20 @@ public class DevicePackageDTO {
         this.location = location;
     }
 
-    public String getLevel() {
-        return level;
+    public String getRoom() {
+        return room;
     }
 
-    public void setLevel(String level) {
-        this.level = level;
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public String getWardrobe() {
+        return wardrobe;
+    }
+
+    public void setWardrobe(String wardrobe) {
+        this.wardrobe = wardrobe;
     }
 
     @Override
@@ -91,25 +131,29 @@ public class DevicePackageDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DevicePackageDTO that = (DevicePackageDTO) o;
-        return Objects.equals(id, that.id) && Objects.equals(stockId, that.stockId) && Objects.equals(replishementId, that.replishementId) && Objects.equals(expDate, that.expDate) && cmdState == that.cmdState && Objects.equals(quantity, that.quantity) && Objects.equals(location, that.location) && Objects.equals(level, that.level);
+        return Objects.equals(id, that.id) && Objects.equals(reference, that.reference) && Objects.equals(number, that.number) && Objects.equals(date, that.date) && Objects.equals(stockId, that.stockId) && Objects.equals(replishementId, that.replishementId) && Objects.equals(expDate, that.expDate) && cmdState == that.cmdState && Objects.equals(quantity, that.quantity) && Objects.equals(location, that.location) && Objects.equals(room, that.room) && Objects.equals(wardrobe, that.wardrobe);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, stockId, replishementId, expDate, cmdState, quantity, location, level);
+        return Objects.hash(id, reference, number, date, stockId, replishementId, expDate, cmdState, quantity, location, room, wardrobe);
     }
 
     @Override
     public String toString() {
         return "DevicePackageDTO{" +
                 "id=" + id +
+                ", reference='" + reference + '\'' +
+                ", number=" + number +
+                ", date=" + date +
                 ", stockId=" + stockId +
                 ", replishementId=" + replishementId +
                 ", expDate=" + expDate +
                 ", cmdState=" + cmdState +
                 ", quantity=" + quantity +
                 ", location='" + location + '\'' +
-                ", level='" + level + '\'' +
+                ", room='" + room + '\'' +
+                ", wardrobe='" + wardrobe + '\'' +
                 '}';
     }
 }

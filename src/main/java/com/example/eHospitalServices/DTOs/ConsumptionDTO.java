@@ -16,6 +16,8 @@ public class ConsumptionDTO {
 
     private Double quantity;
 
+    private Boolean lower;
+
     public Long getId() {
         return id;
     }
@@ -62,6 +64,14 @@ public class ConsumptionDTO {
 
     public void setQuantity(Double quantity) {
         this.quantity = quantity;
+    }
+
+    public Boolean getLower() {
+        return lower;
+    }
+
+    public void setLower(Boolean lower) {
+        this.lower = lower;
     }
 
     @Override

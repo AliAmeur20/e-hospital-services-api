@@ -25,6 +25,9 @@ public class Consumption {
     @Column
     private Double quantity;
 
+    @Column
+    private Boolean lower;
+
     public Long getId() {
         return id;
     }
@@ -63,6 +66,14 @@ public class Consumption {
 
     public void setQuantity(Double quantity) {
         this.quantity = quantity;
+    }
+
+    public Boolean getLower() {
+        return lower;
+    }
+
+    public void setLower(Boolean lower) {
+        this.lower = lower;
     }
 
     @Override

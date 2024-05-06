@@ -9,6 +9,7 @@ import com.example.eHospitalServices.Repositories.DevicePackageRepository;
 import com.example.eHospitalServices.Repositories.StockRepo;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,12 +29,16 @@ public class DevicePackageService {
     public DevicePackageDTO create (CreateReplishementDTO createReplishementDTO, Long replishementId){
         Stock stock = stockRepo.findByConsumableMD_Id(createReplishementDTO.getCmdId());
         DevicePackageDTO devicePackageDTO = new DevicePackageDTO();
+        devicePackageDTO.setDate(LocalDate.now());
+        devicePackageDTO.setNumber(devicePackageRepository.getMaxDevicePackageNumber() + 1);
+        devicePackageDTO.setReference("dp-" + devicePackageDTO.getNumber().toString());
         devicePackageDTO.setStockId(stock.getId());
         devicePackageDTO.setReplishementId(replishementId);
         devicePackageDTO.setExpDate(createReplishementDTO.getExpDate());
         devicePackageDTO.setQuantity(createReplishementDTO.getQuantity());
         devicePackageDTO.setLocation(createReplishementDTO.getLocation());
-        devicePackageDTO.setLevel(createReplishementDTO.getLevel());
+        devicePackageDTO.setRoom(createReplishementDTO.getRoom());
+        devicePackageDTO.setWardrobe(createReplishementDTO.getWardrobe());
         return save(devicePackageDTO);
     }
 

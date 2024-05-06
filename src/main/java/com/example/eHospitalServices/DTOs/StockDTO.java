@@ -1,5 +1,6 @@
 package com.example.eHospitalServices.DTOs;
 
+import com.example.eHospitalServices.Enums.StockLevel;
 import com.example.eHospitalServices.Models.DevicePackage;
 
 import java.util.List;
@@ -14,6 +15,8 @@ public class StockDTO {
 
     private List<DevicePackageDTO> devicePackages;
     private Double quantity;
+
+    private StockLevel level;
 
     public Long getId() {
         return id;
@@ -53,6 +56,14 @@ public class StockDTO {
 
     public void setQuantity(Double quantity) {
         this.quantity = quantity;
+    }
+
+    public StockLevel getLevel() {
+        return level;
+    }
+
+    public void setLevel(StockLevel level) {
+        this.level = level;
     }
 
     @Override

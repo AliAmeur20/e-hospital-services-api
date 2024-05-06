@@ -14,6 +14,15 @@ public class DevicePackage {
     @GeneratedValue
     private Long id;
 
+    @Column
+    private String reference;
+
+    @Column
+    private Long number;
+
+    @Column
+    private LocalDate date;
+
     @ManyToOne()
     @JoinColumn(name = "stock_id")
     private Stock stock;
@@ -37,7 +46,10 @@ public class DevicePackage {
     private String location;
 
     @Column
-    private String level;
+    private String room;
+
+    @Column
+    private String wardrobe;
 
     public Long getId() {
         return id;
@@ -45,6 +57,30 @@ public class DevicePackage {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public Long getNumber() {
+        return number;
+    }
+
+    public void setNumber(Long number) {
+        this.number = number;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public Stock getStock() {
@@ -95,12 +131,20 @@ public class DevicePackage {
         this.location = location;
     }
 
-    public String getLevel() {
-        return level;
+    public String getRoom() {
+        return room;
     }
 
-    public void setLevel(String level) {
-        this.level = level;
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public String getWardrobe() {
+        return wardrobe;
+    }
+
+    public void setWardrobe(String wardrobe) {
+        this.wardrobe = wardrobe;
     }
 
     @Override
@@ -108,25 +152,29 @@ public class DevicePackage {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DevicePackage that = (DevicePackage) o;
-        return Objects.equals(id, that.id) && Objects.equals(stock, that.stock) && Objects.equals(replishement, that.replishement) && Objects.equals(expDate, that.expDate) && cmdState == that.cmdState && Objects.equals(quantity, that.quantity) && Objects.equals(location, that.location) && Objects.equals(level, that.level);
+        return Objects.equals(id, that.id) && Objects.equals(reference, that.reference) && Objects.equals(number, that.number) && Objects.equals(date, that.date) && Objects.equals(stock, that.stock) && Objects.equals(replishement, that.replishement) && Objects.equals(expDate, that.expDate) && cmdState == that.cmdState && Objects.equals(quantity, that.quantity) && Objects.equals(location, that.location) && Objects.equals(room, that.room) && Objects.equals(wardrobe, that.wardrobe);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, stock, replishement, expDate, cmdState, quantity, location, level);
+        return Objects.hash(id, reference, number, date, stock, replishement, expDate, cmdState, quantity, location, room, wardrobe);
     }
 
     @Override
     public String toString() {
         return "DevicePackage{" +
                 "id=" + id +
+                ", reference='" + reference + '\'' +
+                ", number=" + number +
+                ", date=" + date +
                 ", stock=" + stock +
                 ", replishement=" + replishement +
                 ", expDate=" + expDate +
                 ", cmdState=" + cmdState +
                 ", quantity=" + quantity +
                 ", location='" + location + '\'' +
-                ", level='" + level + '\'' +
+                ", room='" + room + '\'' +
+                ", wardrobe='" + wardrobe + '\'' +
                 '}';
     }
 }

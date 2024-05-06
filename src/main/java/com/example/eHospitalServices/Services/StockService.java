@@ -49,14 +49,15 @@ public class StockService {
         stockRepo.save(stock);
     }
 
-    public void destockCMD (Long id, Double quantity){
+    public Double destockCMD (Long id, Double quantity){
         Stock stock = stockRepo.findByConsumableMD_Id(id);
         stock.setQuantity(stock.getQuantity() - quantity);
         stockRepo.save(stock);
+        return stock.getQuantity();
     }
 
-    public void consume (Long id, Double quantity){
+    public Double consume (Long id, Double quantity){
         devicePackageService.consume(id, quantity);
-        destockCMD(id, quantity);
+        return destockCMD(id, quantity);
     }
 }

@@ -73,6 +73,7 @@ public class ConsumableMDController {
     @GetMapping("/security-storage/{id}")
     public ResponseEntity<Long> countSecurityStorage (@PathVariable Long id){
         long result = consumableMDService.countSecurityStorage(id);
+        consumableMDService.saveSecurityStorage(result, id);
         return ResponseEntity.ok(result);
     }
 }

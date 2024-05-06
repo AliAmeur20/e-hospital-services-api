@@ -1,6 +1,9 @@
 package com.example.eHospitalServices.DTOs;
 
+import com.example.eHospitalServices.Enums.CMDType;
 import com.example.eHospitalServices.Enums.OrderType;
+
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class ConsumableMDDTO {
@@ -8,7 +11,13 @@ public class ConsumableMDDTO {
 
     private String name;
 
-    private String type;
+    private String reference;
+
+    private Long number;
+
+    private LocalDate date;
+
+    private CMDType type;
 
     private OrderType orderType;
 
@@ -30,11 +39,35 @@ public class ConsumableMDDTO {
         this.name = name;
     }
 
-    public String getType() {
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public Long getNumber() {
+        return number;
+    }
+
+    public void setNumber(Long number) {
+        this.number = number;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public CMDType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(CMDType type) {
         this.type = type;
     }
 
@@ -59,12 +92,12 @@ public class ConsumableMDDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ConsumableMDDTO that = (ConsumableMDDTO) o;
-        return size == that.size && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(type, that.type) && orderType == that.orderType;
+        return size == that.size && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(reference, that.reference) && Objects.equals(number, that.number) && Objects.equals(date, that.date) && type == that.type && orderType == that.orderType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, type, orderType, size);
+        return Objects.hash(id, name, reference, number, date, type, orderType, size);
     }
 
     @Override
@@ -72,7 +105,10 @@ public class ConsumableMDDTO {
         return "ConsumableMDDTO{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
+                ", reference='" + reference + '\'' +
+                ", number=" + number +
+                ", date=" + date +
+                ", type=" + type +
                 ", orderType=" + orderType +
                 ", size=" + size +
                 '}';

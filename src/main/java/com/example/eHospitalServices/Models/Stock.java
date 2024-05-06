@@ -1,6 +1,8 @@
 package com.example.eHospitalServices.Models;
 
+import com.example.eHospitalServices.Enums.StockLevel;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Formula;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +23,12 @@ public class Stock {
 
     @Column
     private Double quantity;
+
+    @Formula("CASE WHEN quantity >= 100 AND quantity <= 200  THEN 'Moyen' " +
+            "WHEN quantity > 200 THEN 'Haut' " +
+            "ELSE 'Bas' END")
+    @Enumerated(EnumType.STRING)
+    private StockLevel level;
 
     public Long getId() {
         return id;
@@ -54,17 +62,25 @@ public class Stock {
         this.devicePackages = devicePackages;
     }
 
+    public StockLevel getLevel() {
+        return level;
+    }
+
+    public void setLevel(StockLevel level) {
+        this.level = level;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Stock stock = (Stock) o;
-        return Objects.equals(id, stock.id) && Objects.equals(consumableMD, stock.consumableMD) && Objects.equals(devicePackages, stock.devicePackages) && Objects.equals(quantity, stock.quantity);
+        return Objects.equals(id, stock.id) && Objects.equals(consumableMD, stock.consumableMD) && Objects.equals(devicePackages, stock.devicePackages) && Objects.equals(quantity, stock.quantity) && Objects.equals(level, stock.level);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, consumableMD, devicePackages, quantity);
+        return Objects.hash(id, consumableMD, devicePackages, quantity, level);
     }
 
     @Override
@@ -74,6 +90,7 @@ public class Stock {
                 ", consumableMD=" + consumableMD +
                 ", devicePackages=" + devicePackages +
                 ", quantity=" + quantity +
+                ", level='" + level + '\'' +
                 '}';
     }
 }

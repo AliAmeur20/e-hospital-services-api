@@ -2,7 +2,10 @@ package com.example.eHospitalServices.Services;
 
 import com.example.eHospitalServices.DTOs.ConsumptionAverageDTO;
 import com.example.eHospitalServices.DTOs.ConsumptionDTO;
+import com.example.eHospitalServices.Enums.CMDType;
+import com.example.eHospitalServices.Enums.OrderType;
 import com.example.eHospitalServices.Mappers.ConsumptionMapper;
+import com.example.eHospitalServices.Models.ConsumableMD;
 import com.example.eHospitalServices.Models.Consumption;
 import com.example.eHospitalServices.Repositories.ConsumptionRepo;
 import jakarta.persistence.EntityManager;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -19,25 +23,28 @@ public class ConsumptionService {
     private final ConsumptionMapper consumptionMapper;
     private final Utils utils;
     private final StockService stockService;
+    private final ConsumableMDService consumableMDService;
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    public ConsumptionService(ConsumptionRepo consumptionRepo, ConsumptionMapper consumptionMapper, Utils utils, StockService stockService) {
+    public ConsumptionService(ConsumptionRepo consumptionRepo, ConsumptionMapper consumptionMapper, Utils utils, StockService stockService, ConsumableMDService consumableMDService) {
         this.consumptionRepo = consumptionRepo;
         this.consumptionMapper = consumptionMapper;
         this.utils = utils;
         this.stockService = stockService;
+        this.consumableMDService = consumableMDService;
     }
 
     public ConsumptionDTO create(ConsumptionDTO consumptionDTO){
-        utils.checkAndGetCMD(consumptionDTO.getConsumableMDId());
+        ConsumableMD consumableMD = utils.checkAndGetCMD(consumptionDTO.getConsumableMDId());
         ConsumptionDTO newConsumption = new ConsumptionDTO();
         newConsumption.setConsumableMDId(consumptionDTO.getConsumableMDId());
         newConsumption.setDate(LocalDate.now());
         newConsumption.setQuantity(consumptionDTO.getQuantity());
         newConsumption.setStaff(consumptionDTO.getStaff());
-        stockService.consume(consumptionDTO.getConsumableMDId(), consumptionDTO.getQuantity());
+        Double newQuantity = stockService.consume(consumptionDTO.getConsumableMDId(), consumptionDTO.getQuantity());
+        newConsumption.setLower(Objects.equals(consumableMD.getOrderType(), OrderType.ORDER_POINT) && consumableMDService.checkQuantity(newConsumption.getConsumableMDId(), newQuantity));
         return save(newConsumption);
     }
 
