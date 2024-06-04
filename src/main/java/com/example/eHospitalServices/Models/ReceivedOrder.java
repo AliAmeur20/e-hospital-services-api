@@ -6,21 +6,22 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-@Table(name = "replishement")
-public class Replishement {
+@Table(name = "received_order")
+public class ReceivedOrder {
+
     @Id
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private ConsumableMD consumableMD;
+    @Column
+    private Double quantity;
 
     @Column
     private LocalDate date;
 
-    @Column
-    private Double quantity;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private ConsumableMD consumableMD;
 
     public Long getId() {
         return id;
@@ -28,21 +29,6 @@ public class Replishement {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public ConsumableMD getConsumableMD() {
-        return consumableMD;
-    }
-
-    public void setConsumableMD(ConsumableMD consumableMD) {
-        this.consumableMD = consumableMD;
-    }
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
     }
 
     public Double getQuantity() {
@@ -53,26 +39,42 @@ public class Replishement {
         this.quantity = quantity;
     }
 
+    public ConsumableMD getConsumableMD() {
+        return consumableMD;
+    }
+
+    public void setConsumableMD(ConsumableMD consumableMD) {
+        this.consumableMD = consumableMD;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Replishement that = (Replishement) o;
-        return Objects.equals(id, that.id) && Objects.equals(consumableMD, that.consumableMD) && Objects.equals(date, that.date) && Objects.equals(quantity, that.quantity);
+        ReceivedOrder that = (ReceivedOrder) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, consumableMD, date, quantity);
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
-        return "Replishement{" +
+        return "ReceivedOrder{" +
                 "id=" + id +
-                ", consumableMD=" + consumableMD +
-                ", date=" + date +
                 ", quantity=" + quantity +
+                ", date=" + date +
+                ", consumableMD=" + consumableMD +
                 '}';
     }
 }

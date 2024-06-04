@@ -21,7 +21,7 @@ public class ConsumableMDDTO {
 
     private OrderType orderType;
 
-    private int size;
+    private byte[] image;
 
     public Long getId() {
         return id;
@@ -79,12 +79,12 @@ public class ConsumableMDDTO {
         this.orderType = orderType;
     }
 
-    public int getSize() {
-        return size;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     @Override
@@ -92,12 +92,12 @@ public class ConsumableMDDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ConsumableMDDTO that = (ConsumableMDDTO) o;
-        return size == that.size && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(reference, that.reference) && Objects.equals(number, that.number) && Objects.equals(date, that.date) && type == that.type && orderType == that.orderType;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(reference, that.reference) && Objects.equals(number, that.number) && Objects.equals(date, that.date) && type == that.type && orderType == that.orderType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, reference, number, date, type, orderType, size);
+        return Objects.hash(id, name, reference, number, date, type, orderType);
     }
 
     @Override
@@ -110,7 +110,6 @@ public class ConsumableMDDTO {
                 ", date=" + date +
                 ", type=" + type +
                 ", orderType=" + orderType +
-                ", size=" + size +
                 '}';
     }
 }

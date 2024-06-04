@@ -11,7 +11,6 @@ import java.util.Objects;
 @Table(name = "stock")
 public class Stock {
     @Id
-    @GeneratedValue
     private Long id;
 
     @OneToOne

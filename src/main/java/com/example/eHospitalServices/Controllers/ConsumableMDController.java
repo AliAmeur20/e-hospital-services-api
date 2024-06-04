@@ -11,7 +11,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -33,14 +35,14 @@ public class ConsumableMDController {
     }
 
     @PostMapping
-    public ResponseEntity<ConsumableMDDTO> createCMDevice (@RequestBody ConsumableMDDTO consumableMDDTO) throws URISyntaxException {
-        ConsumableMDDTO consumableMD = consumableMDService.create(consumableMDDTO);
+    public ResponseEntity<ConsumableMDDTO> createCMDevice (@RequestPart("cmd") ConsumableMDDTO consumableMDDTO, @RequestPart(value = "image", required = false) MultipartFile image) throws URISyntaxException, IOException {
+        ConsumableMDDTO consumableMD = consumableMDService.create(consumableMDDTO, image);
         return ResponseEntity.created(new URI("/api/consumable-md/" + consumableMD.getId())).body(consumableMD);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ConsumableMDDTO> updateCMDevice (@RequestBody ConsumableMDDTO consumableMDDTO, @PathVariable Long id) {
-        ConsumableMDDTO consumableMD = consumableMDService.update(consumableMDDTO, id);
+    public ResponseEntity<ConsumableMDDTO> updateCMDevice (@RequestPart("cmd") ConsumableMDDTO consumableMDDTO, @RequestPart(value = "image", required = false) MultipartFile image, @PathVariable Long id) {
+        ConsumableMDDTO consumableMD = consumableMDService.update(consumableMDDTO, image, id);
         return ResponseEntity.ok().body(consumableMD);
     }
 
@@ -49,6 +51,7 @@ public class ConsumableMDController {
         Optional<ConsumableMD> consumableMD = consumableMDRepo.findById(id);
         if (consumableMD.isPresent()) {
             ConsumableMDDTO consumableMDDTO = consumableMDMapper.toDTO(consumableMD.get());
+            consumableMDDTO.setImage(consumableMD.get().getImage());
             return ResponseEntity.ok().body(consumableMDDTO);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

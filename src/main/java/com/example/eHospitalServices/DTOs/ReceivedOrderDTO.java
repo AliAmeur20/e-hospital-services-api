@@ -3,16 +3,17 @@ package com.example.eHospitalServices.DTOs;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class ReplishementDTO {
+public class ReceivedOrderDTO {
+
     private Long id;
+
+    private Double quantity;
+
+    private LocalDate date;
 
     private Long consumableMDId;
 
     private String consumableMDName;
-
-    private LocalDate date;
-
-    private Double quantity;
 
     public Long getId() {
         return id;
@@ -20,6 +21,14 @@ public class ReplishementDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Double quantity) {
+        this.quantity = quantity;
     }
 
     public Long getConsumableMDId() {
@@ -46,35 +55,27 @@ public class ReplishementDTO {
         this.date = date;
     }
 
-    public Double getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Double quantity) {
-        this.quantity = quantity;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ReplishementDTO that = (ReplishementDTO) o;
-        return Objects.equals(id, that.id) && Objects.equals(consumableMDId, that.consumableMDId) && Objects.equals(consumableMDName, that.consumableMDName) && Objects.equals(date, that.date) && Objects.equals(quantity, that.quantity);
+        ReceivedOrderDTO that = (ReceivedOrderDTO) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, consumableMDId, consumableMDName, date, quantity);
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
-        return "ReplishementDTO{" +
+        return "ReceivedOrderDTO{" +
                 "id=" + id +
+                ", quantity=" + quantity +
+                ", date=" + date +
                 ", consumableMDId=" + consumableMDId +
                 ", consumableMDName='" + consumableMDName + '\'' +
-                ", date=" + date +
-                ", quantity=" + quantity +
                 '}';
     }
 }

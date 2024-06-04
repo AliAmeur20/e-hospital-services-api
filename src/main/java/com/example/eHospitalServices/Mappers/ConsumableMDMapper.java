@@ -8,6 +8,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ConsumableMDMapper {
 
+    @Mapping(target = "image", ignore = true)
     ConsumableMDDTO toDTO (ConsumableMD consumableMD);
 
     ConsumableMD toEntity (ConsumableMDDTO consumableMDDTO);

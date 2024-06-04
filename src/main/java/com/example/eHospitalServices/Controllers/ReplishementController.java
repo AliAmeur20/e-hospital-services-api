@@ -5,6 +5,7 @@ import com.example.eHospitalServices.DTOs.ReplishementDTO;
 import com.example.eHospitalServices.Mappers.ReplishementMapper;
 import com.example.eHospitalServices.Models.Replishement;
 import com.example.eHospitalServices.Repositories.ReplishementRepo;
+import com.example.eHospitalServices.Services.ReceivedOrderService;
 import com.example.eHospitalServices.Services.ReplishementService;
 import com.example.eHospitalServices.Services.Utils;
 import org.springframework.data.domain.Sort;
@@ -26,11 +27,13 @@ public class ReplishementController {
     private final ReplishementService replishementService;
     private final ReplishementRepo replishementRepo;
     private final ReplishementMapper replishementMapper;
+    private final ReceivedOrderService receivedOrderService;
 
-    public ReplishementController(ReplishementService replishementService, ReplishementRepo replishementRepo, ReplishementMapper replishementMapper) {
+    public ReplishementController(ReplishementService replishementService, ReplishementRepo replishementRepo, ReplishementMapper replishementMapper, ReceivedOrderService receivedOrderService) {
         this.replishementService = replishementService;
         this.replishementRepo = replishementRepo;
         this.replishementMapper = replishementMapper;
+        this.receivedOrderService = receivedOrderService;
     }
 
     @PostMapping
@@ -74,5 +77,12 @@ public class ReplishementController {
     public ResponseEntity<Void> deletReplishement(@PathVariable Long id){
         replishementService.delete(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<Void> createReplishementFromReceivedOrder(@RequestBody CreateReplishementDTO createReplishementDTO, @PathVariable Long id){
+            replishementService.create(createReplishementDTO);
+            receivedOrderService.delete(id);
+            return ResponseEntity.ok().build();
     }
 }

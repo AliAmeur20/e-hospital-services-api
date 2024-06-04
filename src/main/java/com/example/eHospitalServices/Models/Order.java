@@ -24,8 +24,6 @@ public class Order {
     @Column(name = "delivery_date")
     private LocalDate deliveryDate;
 
-    @Formula("CASE WHEN delivery_date >= CURRENT_DATE THEN 'NEW' " +
-            "ELSE 'DELIVERED' END")
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 

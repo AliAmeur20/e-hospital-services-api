@@ -25,6 +25,7 @@ public class StockService {
 
     public void create(Long cmdId){
         StockDTO stockDTO = new StockDTO();
+        stockDTO.setId(cmdId);
         stockDTO.setConsumableMDId(cmdId);
         stockDTO.setQuantity(0D);
         save(stockDTO);

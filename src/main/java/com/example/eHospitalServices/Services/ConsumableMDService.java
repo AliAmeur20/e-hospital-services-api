@@ -9,9 +9,13 @@ import com.example.eHospitalServices.Models.SecurityStorage;
 import com.example.eHospitalServices.Repositories.ConsumableMDRepo;
 import com.example.eHospitalServices.Repositories.ConsumptionRepo;
 import com.example.eHospitalServices.Repositories.SecurityStorageRepo;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -36,7 +40,7 @@ public class ConsumableMDService {
         this.securityStorageRepo = securityStorageRepo;
     }
 
-    public ConsumableMDDTO create(ConsumableMDDTO consumableMDDTO){
+    public ConsumableMDDTO create(ConsumableMDDTO consumableMDDTO, MultipartFile image) throws IOException {
         ConsumableMDDTO consumableMD = new ConsumableMDDTO();
         consumableMD.setDate(LocalDate.now());
         consumableMD.setName(consumableMDDTO.getName());
@@ -44,18 +48,26 @@ public class ConsumableMDService {
         consumableMD.setNumber(consumableMDRepo.getMaxDeviceNumber() + 1);
         consumableMD.setReference("cmd-" + consumableMD.getNumber().toString());
         consumableMD.setOrderType(consumableMDDTO.getOrderType());
-        consumableMD.setSize(consumableMDDTO.getSize());
+        if (image != null){
+            consumableMD.setImage(image.getBytes());
+        }
         ConsumableMDDTO savedCMD = save(consumableMD);
         stockService.create(savedCMD.getId());
         return savedCMD;
     }
 
-    public ConsumableMDDTO update(ConsumableMDDTO consumableMDDTO, Long id){
+    public ConsumableMDDTO update(ConsumableMDDTO consumableMDDTO, MultipartFile image, Long id){
         Optional<ConsumableMD> updatedCMD = consumableMDRepo.findById(id).map(
                 cmd -> {
                     if(consumableMDDTO.getName() != null) cmd.setName(consumableMDDTO.getName());
                     if(consumableMDDTO.getType() != null) cmd.setType(consumableMDDTO.getType());
-                    if(consumableMDDTO.getSize() != 0) cmd.setSize(consumableMDDTO.getSize());
+                    if(image != null) {
+                        try {
+                            cmd.setImage(image.getBytes());
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
                     return consumableMDRepo.save(cmd);
                 });
         return consumableMDMapper.toDTO(updatedCMD.get());
